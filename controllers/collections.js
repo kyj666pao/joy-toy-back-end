@@ -55,9 +55,21 @@ const update = async (req, res) => {
     }
 }
 
+const deleteCollection = async (req, res) => {
+    try {
+        const { collectionId } = req.params
+        const collection = await Collection.findByPk(collectionId)
+        await collection.destroy()
+        res.status(200).json(collection)
+    } catch (error) {
+        res.status(500).json({ err: error })
+    }
+}
+
 module.exports ={
     create,
     index,
     show,
     update,
+    delete: deleteCollection,
 }
