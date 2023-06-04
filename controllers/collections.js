@@ -12,6 +12,17 @@ const create = async (req,res) => {
     }
 }
 
+const index = async (req, res) => {
+    try {
+        const collections = await Collection.findAll()
+        console.log(collections)
+        res.status(200).json(collections)
+    } catch (error) {
+        res.status(500).json({ err: error })
+    }
+}
+
 module.exports ={
-    create
+    create,
+    index,
 }
