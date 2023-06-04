@@ -22,7 +22,27 @@ const index = async (req, res) => {
     }
 }
 
+const show = async (req, res) => {
+    try {
+        const { collectionId } = req.params
+        console.log(collectionId)
+        const collection = await Collection.findOne({
+            where: {
+                id: collectionId
+            }
+        })
+        console.log(collection)
+        res.status(200).json(collection)
+    } catch (error) {
+        res.status(500).json({ err: error })
+    }
+}
+
+
+
 module.exports ={
     create,
     index,
+    show,
+    
 }
