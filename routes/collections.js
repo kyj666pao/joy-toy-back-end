@@ -12,5 +12,6 @@ router.use(decodeUserFromToken)
 router.post('/', checkAuth, collectionsCtrl.create)
 router.get('/', checkAuth, collectionsCtrl.index)
 router.get('/:collectionId', checkAuth, collectionsCtrl.show)
+router.put('/:collectionId', checkAuth, collectionsCtrl.update)
 
 module.exports = router

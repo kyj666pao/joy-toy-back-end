@@ -38,11 +38,26 @@ const show = async (req, res) => {
     }
 }
 
-
+const update = async (req, res) => {
+    try {
+        const { collectionId } = req.params
+        const collection = await Collection.update(
+            req.body, 
+            { where: 
+                { id: collectionId }, 
+              returning: true
+            }
+        )
+        console.log(collection)
+        res.status(200).json(collection[1][0])
+    } catch (error) {
+        res.status(500).json({ err: error })
+    }
+}
 
 module.exports ={
     create,
     index,
     show,
-    
+    update,
 }
