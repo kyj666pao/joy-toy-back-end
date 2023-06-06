@@ -1,11 +1,36 @@
 const { Collection } = require('../models')
+const cloudinary = require('cloudinary').v2
+
+
+const addPhoto = async (req, res) => {
+    try {
+        const { collectionId } = req.params
+        console.log("1---collectionId", collectionId)
+        console.log("2", req.files.img.path)
+        const imageFile = req.files.img.path
+        console.log("3", imageFile)
+        const collection = await Collection.findByPk(collectionId)
+        console.log("4", collection)
+        const image = await cloudinary.uploader.upload(
+            imageFile, 
+            { tags: `${req.body.img}` }
+        )
+        console.log("5---Here---", image)
+        collection.img = image.url
+        await collection.save()
+        res.status(201).json(collection.img)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ err: error })
+    }
+}
 
 const create = async (req,res) => {
     try {
         req.body.profileId = req.user.profile.id
         console.log(req.body)
         const collection = await Collection.create(req.body)
-        console.log(collection)
+        console.log("---collection:",collection)
         res.status(200).json(collection)
     } catch (error) {
         res.status(500).json({ err: error })
@@ -71,5 +96,6 @@ module.exports ={
     index,
     show,
     update,
+    addPhoto,
     delete: deleteCollection,
 }
